@@ -24,6 +24,7 @@
 #app form {
   display: flex;
   gap: 2rem;
+  flex-wrap: wrap;
 }
 
 #app .inner-container {
@@ -34,14 +35,14 @@
 
 #app .inputs {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
 #app #message {
   width: 100%;
-  height: 2rem;
+  height: 3rem;
   display: flex;
-  align-items: center;
   font-size: 0.9rem;
 }
 
@@ -51,4 +52,14 @@
 
 #app #message.okay {
   color: rgb(72, 116, 72);
+}
+
+@media only screen and (max-width: 600px) {
+  #app #message {
+    width: 80%;
+  }
+  #app form {
+    width: 80%;
+    flex-direction: column;
+  }
 }

@@ -72,11 +72,11 @@ function checkMatch(cidrs){
     const {cidr_1, cidr_2} = cidrs
 
     if(!validCidr(cidr_1) && !validCidr(cidr_2)){
-        return {message: 'Invalid cidr 1 and cidr 2 entries', state: 'error'}
+        return {message: 'Invalid CIDR 1 and cidr 2 entries', state: 'error'}
     } else if(!validCidr(cidr_1)){
-        return {message: 'Invalid cidr 1 entry', state: 'error'}
+        return {message: 'Invalid CIDR 1 entry', state: 'error'}
     } else if(!validCidr(cidr_2)){
-        return {message: 'Invalid cidr 2 entry', state: 'error'}
+        return {message: 'Invalid CIDR 2 entry', state: 'error'}
     } else {
         const cidr_1_binary = getIpAddressBinary(cidr_1)
         const cidr_2_binary = getIpAddressBinary(cidr_2)

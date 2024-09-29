@@ -28,12 +28,12 @@ function App() {
         <div className='inner-container'>
           <form onSubmit={handleSubmit}>
             <div className='inputs'>
-              <input id='cidr_1' type="text" value={cidrs['cidr_1']} placeholder='Enter cidr 1' onChange={updateCidr}/>
-              <input id='cidr_2' type="text" value={cidrs['cidr_2']} placeholder='Enter cidr 2' onChange={updateCidr}/>
+              <input id='cidr_1' type="text" value={cidrs['cidr_1']} placeholder='Enter CIDR 1' onChange={updateCidr}/>
+              <input id='cidr_2' type="text" value={cidrs['cidr_2']} placeholder='Enter CIDR 2' onChange={updateCidr}/>
             </div>
             <button style={{cursor: 'pointer'}}>Check</button>
           </form>
-          <div id='message' className={check.state}>{check.message}</div>
+          <p id='message' className={check.state}>{check.message}</p>
         </div>
       </div>
     </div>
