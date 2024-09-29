@@ -34,7 +34,6 @@ function replaceValues(ip_address_binary, net_mask_decimal, value) {
 function getIpRangeDecimal(ip_address_binary, net_mask_decimal){
     const min_binary = replaceValues(ip_address_binary, net_mask_decimal, 0)
     const max_binary = replaceValues(ip_address_binary, net_mask_decimal, 1)
-    console.log(min_binary, max_binary)
     return {
         min: parseInt(min_binary, 2),
         max: parseInt(max_binary, 2)
@@ -72,7 +71,7 @@ function checkMatch(cidrs){
     const {cidr_1, cidr_2} = cidrs
 
     if(!validCidr(cidr_1) && !validCidr(cidr_2)){
-        return {message: 'Invalid CIDR 1 and cidr 2 entries', state: 'error'}
+        return {message: 'Invalid CIDR 1 and CIDR 2 entries', state: 'error'}
     } else if(!validCidr(cidr_1)){
         return {message: 'Invalid CIDR 1 entry', state: 'error'}
     } else if(!validCidr(cidr_2)){
