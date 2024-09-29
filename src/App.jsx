@@ -1,35 +1,44 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { checkMatch } from './utils/utils'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [cidrs, setCidrs] = useState({cidr_1: '', cidr_2: ''})
+
+  // state in the check here can be;
+  //    idle: we aren't checking anything
+  //    error: we checked and found one or both of the cidr input are not valid
+  //    okay: we checked and the cidrs the user entered were okay
+  const [check, setCheck] = useState({state: 'idle', message: ''})
+
+  function updateCidr(e){
+    setCheck({state:'idle', message: ''})
+    setCidrs(cidrs => ({...cidrs, [e.target.id]: e.target.value}))
+  }
+
+  function handleSubmit(e){
+    e.preventDefault()
+    setCheck(checkMatch(cidrs))
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div id='app'>
+      <div className='outer-container'>
+        <h2>Check if CIDR blocks overlap</h2>
+        <div className='inner-container'>
+          <form onSubmit={handleSubmit}>
+            <div className='inputs'>
+              <input id='cidr_1' type="text" value={cidrs['cidr_1']} placeholder='Enter cidr 1' onChange={updateCidr}/>
+              <input id='cidr_2' type="text" value={cidrs['cidr_2']} placeholder='Enter cidr 2' onChange={updateCidr}/>
+            </div>
+            <button style={{cursor: 'pointer'}}>Check</button>
+          </form>
+          <div id='message' className={check.state}>{check.message}</div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
+
 
 export default App
