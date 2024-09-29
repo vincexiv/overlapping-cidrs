@@ -57,7 +57,6 @@ function getIpAddressBinary(cidr){
 }
 
 function rangeOverlap(range1, range2){
-    // make range1 to have the minimum of the min
     if(range2.min < range1.min || range2.max < range1.max){
         const temp = range1
         range1 = range2
@@ -70,11 +69,13 @@ function rangeOverlap(range1, range2){
 function checkMatch(cidrs){
     const {cidr_1, cidr_2} = cidrs
 
-    if(!validCidr(cidr_1) && !validCidr(cidr_2)){
+    const valid_cidr_1 = validCidr(cidr_1)
+    const valid_cidr_2 = validCidr(cidr_2)
+    if(!valid_cidr_1 && !valid_cidr_2){
         return {message: 'Invalid CIDR 1 and CIDR 2 entries', state: 'error'}
-    } else if(!validCidr(cidr_1)){
+    } else if(!valid_cidr_1){
         return {message: 'Invalid CIDR 1 entry', state: 'error'}
-    } else if(!validCidr(cidr_2)){
+    } else if(!valid_cidr_2){
         return {message: 'Invalid CIDR 2 entry', state: 'error'}
     } else {
         const cidr_1_binary = getIpAddressBinary(cidr_1)
