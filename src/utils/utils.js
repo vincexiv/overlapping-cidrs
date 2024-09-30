@@ -3,12 +3,16 @@ function cidrValidity(cidr){
         return { valid: false, message: ''}
     } else {
         const splitted = cidr.split('/')
-        const [a, b, c, d] = splitted[0].split('.')
+        const [a, b, c, d, err] = splitted[0].split('.')
+        if(err){
+            return { okay: false, error: 'Invalid net address'}
+        }
+
         const e = splitted[1]
 
         for(const x of [a, b, c, d]){
             if(x.match(/0+\d+/)){ // No leading zeros allowed. Example is 10.001.000.0/16 (should be 10.1.0.0/16)
-                return { okay: false, error: 'Invalid net address', details: x}
+                return { okay: false, error: 'Invalid net address'}
             } else {
                 let bin = parseInt(x).toString(2)
                 if(x < 0 || x > 256 || bin === 'NaN'){
@@ -20,7 +24,7 @@ function cidrValidity(cidr){
         if(!e || e < 0 || e > 32){
             return { okay: false, error: 'Invalid net mask'}
         } else if(e.match(/0+\d+/)){ // No leading zeros allowed. Example is 10.0.0.0/0021 (should be 10.0.0.0/21)
-            return { okay: false, error: 'Invalid net mask', details: e}
+            return { okay: false, error: 'Invalid net mask' }
         }
 
         return { okay: true, error: ''}
