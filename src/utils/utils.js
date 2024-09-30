@@ -1,23 +1,29 @@
-function validCidr(cidr){
+function cidrValidity(cidr){
     if(typeof cidr !== 'string'){
-        return false
+        return { valid: false, message: ''}
     } else {
         const splitted = cidr.split('/')
         const [a, b, c, d] = splitted[0].split('.')
         const e = splitted[1]
 
-        if(!e || e < 0 || e > 32){
-            return false
-        }
-
         for(const x of [a, b, c, d]){
-            let bin = parseInt(x).toString(2)
-            if(x < 0 || x > 256 || bin === 'NaN'){
-                return false
-            } 
+            if(x.match(/0+\d+/)){ // No leading zeros allowed. Example is 10.001.000.0/16 (should be 10.1.0.0/16)
+                return { okay: false, error: 'Invalid net address', details: x}
+            } else {
+                let bin = parseInt(x).toString(2)
+                if(x < 0 || x > 256 || bin === 'NaN'){
+                    return { okay: false, error: 'Invalid net address'}
+                } 
+            }
+        }
+        
+        if(!e || e < 0 || e > 32){
+            return { okay: false, error: 'Invalid net mask'}
+        } else if(e.match(/0+\d+/)){ // No leading zeros allowed. Example is 10.0.0.0/0021 (should be 10.0.0.0/21)
+            return { okay: false, error: 'Invalid net mask', details: e}
         }
 
-        return true
+        return { okay: true, error: ''}
     }
 }
 
@@ -69,14 +75,13 @@ function rangeOverlap(range1, range2){
 function checkMatch(cidrs){
     const {cidr_1, cidr_2} = cidrs
 
-    const valid_cidr_1 = validCidr(cidr_1)
-    const valid_cidr_2 = validCidr(cidr_2)
-    if(!valid_cidr_1 && !valid_cidr_2){
-        return {message: 'Invalid CIDR 1 and CIDR 2 entries', state: 'error'}
-    } else if(!valid_cidr_1){
-        return {message: 'Invalid CIDR 1 entry', state: 'error'}
-    } else if(!valid_cidr_2){
-        return {message: 'Invalid CIDR 2 entry', state: 'error'}
+    const cidr_1_validity = cidrValidity(cidr_1)
+    const cidr_2_validity = cidrValidity(cidr_2)
+
+    if(!cidr_1_validity.okay){
+        return {message: `CIDR 1: ${cidr_1_validity.error}`, state: 'error'}
+    } else if(!cidr_2_validity.okay){
+        return {message: `CIDR 2: ${cidr_2_validity.error}`, state: 'error'}
     } else {
         const cidr_1_binary = getIpAddressBinary(cidr_1)
         const cidr_2_binary = getIpAddressBinary(cidr_2)
@@ -96,4 +101,4 @@ function checkMatch(cidrs){
     }
 }
 
-export { validCidr, checkMatch }
+export { checkMatch }
