@@ -98,7 +98,7 @@ function checkMatch(cidrs){
 
         const overlap = rangeOverlap(cidr_1_range, cidr_2_range)
         if(overlap){
-            return {message: `The CIDR blocks overlap. They share ${overlap.toLocaleString()} ip addresses`, state: 'error'}
+            return {message: `The CIDR blocks overlap. They share ${overlap.toLocaleString()} addresses`, state: 'error'}
         } else {
             return {message: 'The CIDR blocks don\'t overlap', state: 'okay'}
         }
