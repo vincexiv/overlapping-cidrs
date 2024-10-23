@@ -20,8 +20,10 @@ function cidrValidity(cidr){
                 } 
             }
         }
-        
-        if(!e || e < 0 || e > 32){
+
+        if(isNaN(parseInt(e))){
+            return { okay: false, error: 'Invalid net mask'}
+        } else if(!e || e < 0 || e > 32){
             return { okay: false, error: 'Invalid net mask'}
         } else if(String(e).match(/0+\d+/)){ // No leading zeros allowed. Example is 10.0.0.0/0021 (should be 10.0.0.0/21)
             return { okay: false, error: 'Invalid net mask' }
