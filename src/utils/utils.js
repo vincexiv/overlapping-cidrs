@@ -3,8 +3,11 @@ function cidrValidity(cidr){
         return { valid: false, message: ''}
     } else {
         const splitted = cidr.split('/')
-        const [a, b, c, d, err] = splitted[0].split('.')
-        if(err){
+        const address_splitted = splitted[0].split('.')
+        const [a, b, c, d ] = address_splitted
+
+        // Prevent something like 10.0.0.0..../16
+        if(address_splitted.length !== 4){
             return { okay: false, error: 'Invalid net address'}
         }
 
